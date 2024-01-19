@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Редагувати книгу</title>
+</head>
+<body>
+    <h1>Редагувати книгу</h1>
+
+     <!-- Форма для редагування книги -->
+    <form method="post" action="{% url 'edit_book' pk=book.id %}">
+        {% csrf_token %} <!-- Захист від CSRF-атак -->
+        {{ form.as_p }} <!-- Вивід полів форми у вигляді абзаців -->
+        <button type="submit">Зберегти зміни</button>
+    </form>
+
+    <!-- Посилання для повернення до списку книг -->
+    <a href="{% url 'book_list' %}">Назад до списку книг</a>
+</body>
+</html>

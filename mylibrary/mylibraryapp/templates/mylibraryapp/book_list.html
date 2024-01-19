@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book List</title>
+</head>
+<body>
+    <h1>Book List</h1>
+
+    <!-- Додавання нової книги -->
+    <form method="post" action="{% url 'create_book' %}">
+        {% csrf_token %}
+        <label for="title">Назва:</label>
+        <input type="text" name="title" required>
+        
+        <label for="author">Автор:</label>
+        <input type="text" name="author" required>
+        
+        <label for="genre">Жанр:</label>
+        <input type="text" name="genre" required>
+        
+        <label for="release_year">Рік випуску:</label>
+        <input type="number" name="release_year" required>
+
+        <button type="submit">Додати книгу</button>
+    </form>
+
+    <!-- Форма для пошуку книг -->
+    <form method="get" action="{% url 'search_books' %}">
+        <label for="search">Пошук:</label>
+        <input type="text" name="search" placeholder="Search by title, author, genre, or release year">
+        <button type="submit">Search</button>
+        <a href="{% url 'book_list' %}"><button type="button">Скинути пошук</button></a>
+    </form>
+
+    <!-- Фільтр для прочитаних та непрочитаних книг -->
+    <form method="get" action="{% url 'filter_books' %}">
+        <label for="read_status">Фільтрувати за статусом читання:</label>
+        <select name="read_status">
+            <option value="">Всі</option>
+            <option value="read">Прочитані</option>
+            <option value="unread">Не прочитані</option>
+        </select>
+        <button type="submit">Застосувати фільтр</button>
+    </form>
+
+    <ul>
+        {% for book in books %}
+            <!-- Відображення кожної книги -->
+            <li>
+                {{ book.title }} by {{ book.author }} ({{ book.release_year }}) 
+                {% if book.is_read %}
+                    <span style="color: green;">(Read)</span>
+                {% else %}
+                    <span style="color: red;">(Unread)</span>
+                {% endif %}
+                <!-- Кнопка для позначення книги як прочитаної -->
+                <form method="post" action="{% url 'mark_as_read' book.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Відзначити як прочитане</button>
+                </form>
+                <!-- Кнопки для редагування та видалення -->
+                <a href="{% url 'edit_book' pk=book.id %}">Редагувати</a>
+                <a href="{% url 'delete_book' book.id %}">Видалити</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Створити книгу</title>
+</head>
+<body>
+    <h1>Створити книгу</h1>
+
+     <!-- Форма для створення книги -->
+    <form method="post" action="{% url 'create_book' %}">
+        {% csrf_token %} <!-- Захист від CSRF-атак -->
+        {{ form.as_p }} <!-- Вивід полів форми у вигляді абзаців -->
+        <button type="submit">Додати книгу</button>
+    </form>
+    
+    <a href="{% url 'book_list' %}">Назад до списку книг</a>
+</body>
+</html>

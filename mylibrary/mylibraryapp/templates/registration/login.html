@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+
+{% block content %}
+  <h2>Логін</h2>
+  <!-- Форма для входу користувача -->
+  <form method="post" action="{% url 'login' %}?next={{ request.GET.next }}">
+    {% csrf_token %} <!-- Захист від CSRF-атак -->
+     <!-- Поля для введення ім'я користувача та пароля -->
+    {{ form.username.label_tag }} {{ form.username }}
+    {{ form.password.label_tag }} {{ form.password }}
+     <!-- Приховане поле для передачі параметру 'next' -->
+    <input type="hidden" name="next" value="{{ request.GET.next }}">
+    <button type="submit">Логін</button>
+</form>
+  <!-- Повідомлення про помилкові дані та посилання на реєстрацію -->
+  {% if request.GET.next and not form.errors %}
+    <p>Invalid credentials. Ви можете зареєструватися <a href="{% url 'register' %}">тут</a>.</p>
+  {% endif %}
+{% endblock %}
